@@ -21,7 +21,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * Servlet implementation class leaderboard
+ * 
+ * @author Keinan Gilad
+ *
  */
 public class Leaderboard extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -39,31 +41,8 @@ public class Leaderboard extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.getWriter().println(convertMapToJson());
-    }
-
-    private String convertMapToJson() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-
-        if (!list.isEmpty()) {
-            Collections.sort(list, comparator);
-            for (UserData data : list) {
-                sb.append("{");
-                sb.append(String.format("\"name\":\"%s\"", data.getName()));
-                sb.append(",");
-                sb.append(String.format("\"value\":\"%s\"", data.getValue()));
-                sb.append(",");
-                sb.append(String.format("\"color\":\"%s\"", data.getColor()));
-                sb.append("}");
-                sb.append(",");
-            }
-
-            sb.deleteCharAt(sb.lastIndexOf(","));// Removing the last index of ","
-        }
-
-        sb.append("]");
-        return sb.toString();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,6 +64,8 @@ public class Leaderboard extends HttpServlet {
 
             updateMap(name, value, color, true);
         }
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -97,10 +78,14 @@ public class Leaderboard extends HttpServlet {
 
             updateMap(name, null, null, false);
         }
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         loadFromFile();
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
     }
 
     private void updateMap(String name, String value, String color, boolean toAdd) {
@@ -173,6 +158,30 @@ public class Leaderboard extends HttpServlet {
         } catch (Exception e) {
 
         }
+    }
+
+    private String convertMapToJson() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        if (!list.isEmpty()) {
+            Collections.sort(list, comparator);
+            for (UserData data : list) {
+                sb.append("{");
+                sb.append(String.format("\"name\":\"%s\"", data.getName()));
+                sb.append(",");
+                sb.append(String.format("\"value\":\"%s\"", data.getValue()));
+                sb.append(",");
+                sb.append(String.format("\"color\":\"%s\"", data.getColor()));
+                sb.append("}");
+                sb.append(",");
+            }
+
+            sb.deleteCharAt(sb.lastIndexOf(","));// Removing the last index of ","
+        }
+
+        sb.append("]");
+        return sb.toString();
     }
 
     private void convertJsonToMap(String mapJson) {
