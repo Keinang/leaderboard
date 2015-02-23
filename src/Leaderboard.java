@@ -109,7 +109,7 @@ public class Leaderboard extends HttpServlet {
                     break;
                 }
             }
-            if (match != -1) {
+            if (match != -1 && !toAdd) {
                 list.remove(match);
             }
 
