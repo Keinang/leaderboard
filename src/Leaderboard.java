@@ -92,11 +92,11 @@ public class Leaderboard extends HttpServlet {
         if (name != null && !name.equals("null")) {
             name = name.trim();
 
-            double valParsed = 0.0;
+            Integer valParsed = 0;
             if (value != null) {
                 value = value.trim();
                 try {
-                    valParsed = Double.valueOf(value);
+                    valParsed = Integer.valueOf(value);
                 } catch (Exception e) {
                     // Nothing to do.
                 }
@@ -196,7 +196,7 @@ public class Leaderboard extends HttpServlet {
         for (int i = 0; i < array.size(); i++) {
             JsonObject jsonElement = array.get(i).getAsJsonObject();
             String name = jsonElement.get("name").getAsString();
-            Double value = jsonElement.get("value").getAsDouble();
+            Integer value = jsonElement.get("value").getAsInt();
             String color = jsonElement.get("color").getAsString();
             UserData data = new UserData(name, value, color);
             list.add(data);
@@ -213,9 +213,9 @@ public class Leaderboard extends HttpServlet {
     public class UserData {
         private String name;
         private String color;
-        private Double value;
+        private Integer value;
 
-        public UserData(String name, Double value, String color) {
+        public UserData(String name, Integer value, String color) {
             this.name = name;
             this.color = color;
             this.value = value;
@@ -229,11 +229,11 @@ public class Leaderboard extends HttpServlet {
             this.color = color;
         }
 
-        public Double getValue() {
+        public Integer getValue() {
             return value;
         }
 
-        public void setValue(Double value) {
+        public void setValue(Integer value) {
             this.value = value;
         }
 
